@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "scripts": {
     "build": "bsb -make-world",
+    "build:prod": "webpack",
     "start": "bsb -make-world -w -ws _ ",
     "clean": "bsb -clean-world",
+    "dev:server": "webpack-dev-server",
     "server": "moduleserve ./ --port 8000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,8 +28,20 @@
     "reason-transition-group": "^2.0.2"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.7.0",
     "bs-platform": "^6.2.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^4.0.0-beta.8",
+    "image-config-webpack-plugin": "^1.4.0",
+    "js-config-webpack-plugin": "^1.4.0",
     "moduleserve": "^0.9.0",
-    "parcel": "^2.0.0-alpha.2.1"
+    "parcel": "^2.0.0-alpha.2.1",
+    "preload-webpack-plugin": "^2.3.0",
+    "script-ext-html-webpack-plugin": "^2.1.4",
+    "scss-config-webpack-plugin": "^1.4.0",
+    "terser-webpack-plugin": "^2.2.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   }
 }
