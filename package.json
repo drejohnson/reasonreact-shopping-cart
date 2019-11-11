@@ -2,10 +2,10 @@
   "name": "reason-shopping-cart",
   "version": "0.1.0",
   "scripts": {
-    "build": "bsb -make-world",
-    "build:prod": "webpack",
-    "start": "bsb -make-world -w -ws _ ",
-    "clean": "bsb -clean-world",
+    "build": "webpack",
+    "build:bsb": "bsb -make-world",
+    "watch:bsb": "bsb -make-world -w -ws _ ",
+    "clean:bsb": "bsb -clean-world",
     "dev:server": "webpack-dev-server",
     "server": "moduleserve ./ --port 8000",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -31,6 +31,7 @@
     "@babel/preset-react": "^7.7.0",
     "bs-platform": "^6.2.1",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.5",
     "html-webpack-plugin": "^4.0.0-beta.8",
     "image-config-webpack-plugin": "^1.4.0",
     "js-config-webpack-plugin": "^1.4.0",
