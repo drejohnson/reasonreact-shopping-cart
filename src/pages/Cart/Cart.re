@@ -23,7 +23,7 @@ let make = _ => {
     <div>
       <p>
         "Total : "->React.string
-        <span> {Js.Int.toString(total)->React.string} </span>
+        <span> {"$" ++ Js.Int.toString(total) |> React.string} </span>
       </p>
       <button> "Checkout"->React.string </button>
     </div>
