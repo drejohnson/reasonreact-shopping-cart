@@ -1,10 +1,3 @@
-module Styles = {
-  open Css;
-
-  let cartItems =
-    style([padding3(~top=rem(6.), ~h=rem(1.), ~bottom=rem(2.))]);
-};
-
 [@react.component]
 let make = _ => {
   let (cart, removeItem) = React.useContext(CartContext.context);
@@ -25,7 +18,7 @@ let make = _ => {
     cart->Belt.List.map((book: BookData.book) =>
       <CartItem key={Js.Int.toString(book.rank)} book removeItem />
     );
-  <div className=Styles.cartItems>
+  <div className=Cart_Styles.cartItems>
     {Array.of_list(cartItems)->ReasonReact.array}
     <div>
       <p>
@@ -36,3 +29,5 @@ let make = _ => {
     </div>
   </div>;
 };
+
+let default = make;
