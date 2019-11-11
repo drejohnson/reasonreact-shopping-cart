@@ -30,11 +30,29 @@ let make = () => {
     useFetch(
       "https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json?api-key=6lCoWhaoHYUhjkpKwujA5sd3scna08JC",
     );
-  let (cart, setCart) = React.useState(() => []);
+
+  let persistedCart = Dom.Storage.(localStorage |> getItem("cart-items"));
+
+  let persistedCartItems =
+    switch (persistedCart) {
+    | Some(message) => Js.Json.parseExn(message)
+    | None => Js.Json.parseExn("[]")
+    };
+
+  let decodedCart = BookData.books_decode(persistedCartItems);
+
+  let persistedCart =
+    switch (decodedCart) {
+    | Belt.Result.Ok(books) => books
+    | _ => []
+    };
+
+  let (cart, setCart) = React.useState(() => persistedCart);
+
+  let encodedCart = BookData.books_encode(cart);
 
   let addItem = (book: BookData.book) => {
     setCart(_ => [book, ...cart]);
-    let encodedCart = BookData.books_encode(cart);
     Dom.Storage.(
       localStorage |> setItem("cart-items", Json.stringify(encodedCart))
     );
@@ -44,7 +62,6 @@ let make = () => {
     let book =
       cart->Belt.List.keep((book: BookData.book) => book.rank !== id);
     setCart(_ => book);
-    let encodedCart = BookData.books_encode(cart);
     Dom.Storage.(
       localStorage |> setItem("cart-items", Json.stringify(encodedCart))
     );
@@ -52,7 +69,6 @@ let make = () => {
 
   React.useEffect1(
     () => {
-      let encodedCart = BookData.books_encode(cart);
       Dom.Storage.(
         localStorage |> setItem("cart-items", Json.stringify(encodedCart))
       );
