@@ -63,20 +63,23 @@ let make = () => {
 
   <BooksContext.Provider value=(state, addItem)>
     <CartContext.Provider value=(cart, removeItem)>
-      <div className=Styles.wrapper>
-        <Navigation />
-        <AppRouter>
-          {currentRoute =>
-             Route.Config.(
-               switch (currentRoute) {
-               | Home => <Books />
-               | Cart => <Cart />
-               | NotFound =>
-                 <div> "Page not found :/"->ReasonReact.string </div>
-               }
-             )}
-        </AppRouter>
-      </div>
+      <React.Suspense
+        fallback={<div> {ReasonReact.string("Loading ...")} </div>}>
+        <div className=Styles.wrapper>
+          <Navigation />
+          <AppRouter>
+            {currentRoute =>
+               Route.Config.(
+                 switch (currentRoute) {
+                 | Home => <Pages.Books.Lazy />
+                 | Cart => <Pages.Cart.Lazy />
+                 | NotFound =>
+                   <div> "Page not found :/"->ReasonReact.string </div>
+                 }
+               )}
+          </AppRouter>
+        </div>
+      </React.Suspense>
     </CartContext.Provider>
   </BooksContext.Provider>;
 };
