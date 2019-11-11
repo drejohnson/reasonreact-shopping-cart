@@ -1,4 +1,6 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlPlugin = require('script-ext-html-webpack-plugin');
 const JsConfigWebpackPlugin = require('js-config-webpack-plugin');
@@ -14,11 +16,19 @@ module.exports = {
   mode: 'production',
   output: {
     path: outputDir,
-    chunkFilename: '[name].[chunkhash:8].js',
-    filename: '[name].[chunkhash:8].js',
+    chunkFilename: 'static/[name].[chunkhash:8].js',
+    filename: 'static/[name].[chunkhash:8].js',
     publicPath: '/',
   },
   plugins: [
+    new CopyPlugin([
+      {
+        from: 'public',
+        to: `${outputDir}`,
+        ignore: ['index.html'],
+      },
+    ]),
+    new CleanWebpackPlugin(),
     new JsConfigWebpackPlugin(),
     new ScssConfigWebpackPlugin(),
     new ImageConfigWebpackPlugin(),
@@ -38,7 +48,7 @@ module.exports = {
       },
       hash: true,
       inject: true,
-      template: './template.html',
+      template: './public/index.html',
     }),
     new ScriptExtHtmlPlugin({
       defaultAttribute: 'defer',
