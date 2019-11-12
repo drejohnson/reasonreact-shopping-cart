@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "package.json", "use": "@now/static-build" }
+  ],
+  "routes": [
+    {
+      "src": "/(.*).(js|svg|png|jpg|jpeg)",
+      "headers": { "cache-control": "public, max-age=31536000" }
+    },
+    { "src": "/(.*)", "dest": "/" }
+  ]
+}
