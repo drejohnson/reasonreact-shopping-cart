@@ -58,7 +58,7 @@ let classNames =
   );
 
 [@react.component]
-let make = (~book: BookData.book, ~addItem) => {
+let make = (~book, ~addItem) => {
   let (showDetails, setShowDetails) = React.useState(() => false);
   let (bookView, setBookView) = React.useState(() => book);
   let toggleDetails = _ => setShowDetails(_ => !showDetails);

@@ -1,54 +1,35 @@
 type state =
   | Loading
   | Error
-  | Loaded(list(BookData.book));
+  | Loaded(Js.Json.t);
 
 type action =
-  | BooksFetch
-  | BooksFetched(list(BookData.book))
-  | BooksFailedToFetch;
+  | Fetching
+  | FetchSuccess(Js.Json.t)
+  | FailedToFetch;
 
-exception PostError(string);
+exception Error(Js.Promise.error);
 
 let useFetch = (url: string) => {
   let (state, dispatch) =
     React.useReducer(
       (_state, action) =>
         switch (action) {
-        | BooksFetch => Loading
-        | BooksFetched(books) => Loaded(books)
-        | BooksFailedToFetch => Error
+        | Fetching => Loading
+        | FetchSuccess(value) => Loaded(value)
+        | FailedToFetch => Error
         },
       Loading,
     );
 
   React.useEffect0(() => {
-    open BookData;
     Js.Promise.(
       Fetch.fetch(url)
       |> then_(Fetch.Response.json)
-      |> then_(response =>
-           response |> response_decode |> Belt.Result.getExn |> resolve
-         )
-      |> then_(({results}) =>
-           {
-             let transformedBooks =
-               results.books
-               ->Belt.List.map(book =>
-                   {
-                     ...book,
-                     price:
-                       GeneratePrice.generatePrice(10., 60.)
-                       |> Js.Float.fromString,
-                   }
-                 );
-             dispatch(BooksFetched(transformedBooks));
-           }
-           |> resolve
-         )
+      |> then_(response => dispatch(FetchSuccess(response)) |> resolve)
       |> catch(err => {
-           dispatch(BooksFailedToFetch);
-           reject(ResError(err));
+           dispatch(FailedToFetch);
+           reject(Error(err));
          })
     )
     |> ignore;

@@ -16,6 +16,6 @@ type books = list(book);
 type bookResult = {books};
 
 [@decco]
-type response = {results: bookResult};
+type bookResponse = {results: bookResult};
 
 exception ResError(Js.Promise.error);
